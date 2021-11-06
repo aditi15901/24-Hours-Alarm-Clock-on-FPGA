@@ -1,4 +1,4 @@
-module aclock (
+module alarm_clock (
 	input reset,  /* Active high reset pulse, to set the time to the input hour and minute (as defined by the H_in1, H_in0, M_in1, and M_in0 inputs) and the second to 00. It should also set the alarm value to 0.00.00, and to set the Alarm (output) low.For normal operation, this input pin should be 0*/
 	input clk,  /* A 10Hz input clock. This should be used to generate each real-time second*/
 	input [1:0] H_in1, /*A 2-bit input used to set the most significant hour digit of the clock (if LD_time=1),or the most significant hour digit of the alarm (if LD_alarm=1). Valid values are 0 to 2. */ 
@@ -17,8 +17,8 @@ module aclock (
 	output [3:0]  M_out1, 
 	/* The most significant digit of the minute. Valid values are 0 to 5.*/
 	output [3:0]  M_out0, /* The least significant digit of the minute. Valid values are 0 to 9. */
-	output [3:0]  S_out1, /* The most significant digit of the minute. Valid values are 0 to 5. */
-	output [3:0]  S_out0  /* The least significant digit of the minute. Valid values are 0 to 9. */
+	output [3:0]  S_out1, /* The most significant digit of the seconds. Valid values are 0 to 5. */
+	output [3:0]  S_out0  /* The least significant digit of the seconds. Valid values are 0 to 9. */
 );
  
 // internal signal
