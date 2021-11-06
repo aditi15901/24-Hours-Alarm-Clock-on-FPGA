@@ -37,7 +37,7 @@ reg [3:0] c_min0,a_min0;
 reg [3:0] c_sec1,a_sec1;
 /* The most significant second digit of the temp clock and alarm.*/ 
 reg [3:0] c_sec0,a_sec0;
-/* The least significant minute digit of the temp clock and alarm.*/ 
+/* The least significant second digit of the temp clock and alarm.*/ 
 
 /************************************************/ 
 /*****************function mod10******************/
