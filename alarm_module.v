@@ -17,8 +17,8 @@ module alarm_clock (
 	output [3:0]  M_out1, 
 	/* The most significant digit of the minute. Valid values are 0 to 5.*/
 	output [3:0]  M_out0, /* The least significant digit of the minute. Valid values are 0 to 9. */
-	output [3:0]  S_out1, /* The most significant digit of the minute. Valid values are 0 to 5. */
-	output [3:0]  S_out0  /* The least significant digit of the minute. Valid values are 0 to 9. */
+	output [3:0]  S_out1, /* The most significant digit of the seconds. Valid values are 0 to 5. */
+	output [3:0]  S_out0  /* The least significant digit of the seconds. Valid values are 0 to 9. */
 );
  
 // internal signal
