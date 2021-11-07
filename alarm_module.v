@@ -1,47 +1,96 @@
-module alarm_clock (
-	input reset,  /* Active high reset pulse, to set the time to the input hour and minute (as defined by the H_in1, H_in0, M_in1, and M_in0 inputs) and the second to 00. It should also set the alarm value to 0.00.00, and to set the Alarm (output) low.For normal operation, this input pin should be 0*/
-	input clk,  /* A 10Hz input clock. This should be used to generate each real-time second*/
-	input [1:0] H_in1, /*A 2-bit input used to set the most significant hour digit of the clock (if LD_time=1),or the most significant hour digit of the alarm (if LD_alarm=1). Valid values are 0 to 2. */ 
-	input [3:0] H_in0, /* A 4-bit input used to set the least significant hour digit of the clock (if LD_time=1),or the least significant hour digit of the alarm (if LD_alarm=1). Valid values are 0 to 9.*/
-	input [3:0] M_in1, /*A 4-bit input used to set the most significant minute digit of the clock (if LD_time=1),or the most significant minute digit of the alarm (if LD_alarm=1). Valid values are 0 to 5.*/
-	input [3:0] M_in0, /*A 4-bit input used to set the least significant minute digit of the clock (if LD_time=1),or the least significant minute digit of the alarm (if LD_alarm=1). Valid values are 0 to 9. */
-	input LD_time,  /* If LD_time=1, the time should be set to the values on the inputs H_in1, H_in0, M_in1, and M_in0. The second time should be set to 0.If LD_time=0, the clock should act normally (i.e. second should be incremented every 10 clock cycles).*/
-	input   LD_alarm,  /* If LD_alarm=1, the alarm time should be set to the values on the inputs H_in1, H_in0, M_in1, and M_in0.If LD_alarm=0, the clock should act normally.*/ 
-	input   STOP_al,  /* If the Alarm (output) is high, then STOP_al=1 will bring the output back low. */ 
-	input   AL_ON,  /* If high, the alarm is ON (and Alarm will go high if the alarm time equals the real time). If low the the alarm function is OFF. */
-	output reg Alarm,  /* This will go high if the alarm time equals the current time, and AL_ON is high. This will remain high, until STOP_al goes high, which will bring Alarm back low.*/
-	output [1:0]  H_out1, 
-	/* The most significant digit of the hour. Valid values are 0 to 2. */
-	output [3:0]  H_out0, 
-	/* The least significant digit of the hour. Valid values are 0 to 9. */
-	output [3:0]  M_out1, 
-	/* The most significant digit of the minute. Valid values are 0 to 5.*/
-	output [3:0]  M_out0, /* The least significant digit of the minute. Valid values are 0 to 9. */
-	output [3:0]  S_out1, /* The most significant digit of the seconds. Valid values are 0 to 5. */
-	output [3:0]  S_out0  /* The least significant digit of the seconds. Valid values are 0 to 9. */
+
+/*				CS203 Project
+
+	Implementing a Simple Alarm Clock on FPGA
+
+    Group Members:
+	1. Aditi Das 2020csb1064
+	2. Jugal Chapatwala 2020csb1082
+	3. Shruti Sikri 2020csb1128
+
+*/
+
+module alarm_clock ( 
+	input reset,  
+	/* reset: It is an active high reset pulse used to set the time to the input hour and minute 
+	          (as defined by the hour_in1, hour_in0, minute_in1, and minute_in0 inputs) and the second to 00. It 
+			  also sets the alarm value to 0.00.00, and sets the Alarm (output) LOW. For normal 
+			  operation, this input pin is set to 0.
+	*/
+	input clock,  
+	/* clock: A 100MHz input clock used to generate each real-time second */
+	input [1:0] hour_in1, 
+	/* hour_in1: A 2-bit input used to set the most significant hour digit of the clock (if load_time=1),
+	             or the most significant hour digit of the alarm (if load_alarm=1). Valid values are 0 to 2. 
+	*/ 
+	input [3:0] hour_in0, 
+	/* hour_in0: A 4-bit input used to set the least significant hour digit of the clock (if load_time = 1),
+	             or the least significant hour digit of the alarm (if load_alarm=1). Valid values are 0 to 9.
+	*/
+	input [3:0] minute_in1,
+	/* minute_in1: A 4-bit input used to set the most significant minute digit of the clock (if load_time=1),
+				   or the most significant minute digit of the alarm (if load_alarm=1). Valid values are 0 to 5.
+	*/
+	input [3:0] minute_in0, 
+	/* minute_in0: A 4-bit input used to set the least significant minute digit of the clock (if load_time=1),
+	               or the least significant minute digit of the alarm (if load_alarm=1). Valid values are 0 to 9. 
+	*/
+	input load_time,  
+	/* load_time: If load_time=1, the time should be set to the values on the inputs hour_in1, hour_in0, minute_in1, and 
+	              minute_in0.The second time should be set to 0.If load_time=0, the clock should act normally 
+				 (i.e. second should be incremented every 10 clock cycles).
+	*/
+	input   load_alarm,  
+	/* load_alarm: If load_alarm = 1, the alarm time should be set to the values on the inputs hour_in1, hour_in0, minute_in1,
+				   and minute_in0. If load_alarm = 0, then there y. 
+	*/ 
+	input   STOP_alarm,  
+	/* STOP_alarm: If the Alarm (output) is HIGH then STOP_alarm = 1 will bring the output back to LOW. */ 
+	input   Alarm_ON,  
+	/* Alarm_ON: If HIGH, the alarm is ON (and Alarm will go HIGH if the alarm time equals the real time). If low the 
+				 the alarm function is OFF. 
+	*/
+	output reg Alarm,  
+	/* Alarm: This will go HIGH if the alarm time equals the current time, and Alarm_ON is HIGH. This will remain HIGH
+			  until STOP_alarm goes HIGH, which will bring Alarm back to LOW.
+	*/
+	output [1:0]  hour_out1, 
+	/* hour_out1: The most significant digit of the hour. Valid values are 0 to 2. */
+	output [3:0]  hour_out0, 
+	/* hour_out0: The least significant digit of the hour. Valid values are 0 to 9. */
+	output [3:0]  minute_out1, 
+	/* minute_out1: The most significant digit of the minute. Valid values are 0 to 5. */
+	output [3:0]  minute_out0, 
+	/* minute_out0: The least significant digit of the minute. Valid values are 0 to 9. */
+	output [3:0]  second_out1, 
+	/* second_out1: The most significant digit of the seconds. Valid values are 0 to 5. */
+	output [3:0]  second_out0  
+	/* second_out0: The least significant digit of the seconds. Valid values are 0 to 9. */
 );
  
-// internal signal
-reg clk_1s; // 1-s clock
-reg [3:0] tmp_1s; // count for creating 1-s clock 
-reg [5:0] tmp_hour, tmp_minute, tmp_second; 
+// Internal Signal
+reg clock_1s; // 1-second clock
+reg [3:0] temp_1s; // count for creating 1-s clock 
+reg [5:0] temp_hour, temp_minute, temp_second; 
 // counter for clock hour, minute and second
-reg [1:0] c_hour1,a_hour1; 
+reg [1:0] clock_hour1, alarm_hour1; 
 /* The most significant hour digit of the temp clock and alarm. */ 
-reg [3:0] c_hour0,a_hour0;
+reg [3:0] clock_hour0, alarm_hour0;
 /* The least significant hour digit of the temp clock and alarm. */ 
-reg [3:0] c_min1,a_min1;
+reg [3:0] clock_min1, alarm_min1;
 /* The most significant minute digit of the temp clock and alarm.*/ 
-reg [3:0] c_min0,a_min0;
+reg [3:0] clock_min0, alarm_min0;
 /* The least significant minute digit of the temp clock and alarm.*/ 
-reg [3:0] c_sec1,a_sec1;
+reg [3:0] clock_sec1, alarm_sec1;
 /* The most significant second digit of the temp clock and alarm.*/ 
-reg [3:0] c_sec0,a_sec0;
+reg [3:0] clock_sec0, alarm_sec0;
 /* The least significant second digit of the temp clock and alarm.*/ 
 
-/************************************************/ 
-/*****************function mod10******************/
-/*************************************************/ 
+/********************************************************************/ 
+/***************************Function mod10***************************/
+/*Function to extract the MSD ( most significant digit) of a number */
+/********************************************************************/ 
+
 function [3:0] mod_10;
 	input [5:0] number;
 	begin
@@ -50,119 +99,124 @@ function [3:0] mod_10;
 endfunction
 
 /*************************************************/ 
-/************* Clock operation**************/
+/************* Clock operation********************/
 /*************************************************/
 
-always @(posedge clk_1s or posedge reset )
+always @(posedge clock_1s or posedge reset )
 begin
-	if(reset) begin // reset high => alarm time to 00.00.00, alarm to low, clock to H_in and M_in and S to 00
-		a_hour1 <= 0;
-		a_hour0 <= 0;
-		a_min1 <= 0;
-		a_min0 <= 0;
-		a_sec1 <= 0;
-		a_sec0 <= 0;
-		tmp_hour <= 0;
-		tmp_minute <= 0;
-		tmp_second <= 0;
+	if(reset) begin 
+		// if reset HIGH => alarm time to 00.00.00, Alarm to LOW, clock to hour_in and minute_in and seconds to 00
+		alarm_hour1 <= 0;
+		alarm_hour0 <= 0;
+		alarm_min1 <= 0;
+		alarm_min0 <= 0;
+		alarm_sec1 <= 0;
+		alarm_sec0 <= 0;
+		temp_hour <= 0;
+		temp_minute <= 0;
+		temp_second <= 0;
 	end 
 	else begin
-		if(LD_alarm) begin // LD_alarm =1 => set alarm clock to H_in, M_in
-			a_hour1 <= H_in1;
-			a_hour0 <= H_in0;
-			a_min1 <= M_in1;
-			a_min0 <= M_in0;
-			a_sec1 <= 0;
-			a_sec0 <= 0;
+		if(load_alarm) begin 
+			// load_alarm = 1 => set alarm clock to H_in, M_in
+			alarm_hour1 <= hour_in1;
+			alarm_hour0 <= hour_in0;
+			alarm_min1 <= minute_in1;
+			alarm_min0 <= minute_in0;
+			alarm_sec1 <= 0;
+			alarm_sec0 <= 0;
 		end 
-		if(LD_time) begin // LD_time =1 => set time to H_in, M_in
-			tmp_hour <= H_in1*10 + H_in0;
-			tmp_minute <= M_in1*10 + M_in0;
-			tmp_second <= 0;
+		if(load_time) begin 
+			// load_time =1 => set time to H_in, M_in
+			temp_hour <= hour_in1*10 + hour_in0;
+			temp_minute <= minute_in1*10 + minute_in0;
+			temp_second <= 0;
 		end 
-		else begin  // LD_time =0 , clock operates normally
-			tmp_second <= tmp_second + 1;
-		if(tmp_second >=59) begin // second > 59 then minute increases
-			tmp_minute <= tmp_minute + 1;
-			tmp_second <= 0;
+		else begin  // load_time =0 , clock operates normally
+			temp_second <= temp_second + 1;
+		if(temp_second >=59) begin // second > 59 then minute increases
+			temp_minute <= temp_minute + 1;
+			temp_second <= 0;
 		end
-		if(tmp_minute >=59) begin // minute > 59 then hour increases
-			tmp_minute <= 0;
-			tmp_hour <= tmp_hour + 1;
+		if(temp_minute >=59) begin // minute > 59 then hour increases
+			temp_minute <= 0;
+			temp_hour <= temp_hour + 1;
 		end
-		if(tmp_hour >= 24) begin // hour > 24 then set hour to 0
-			tmp_hour <= 0; 
+		if(temp_hour >= 24) begin // hour > 24 then set hour to 0
+			temp_hour <= 0; 
 		end
 		end
 	end
 end 
 
 /*************************************************/ 
-/******** Create 1-second clock****************/
+/*********** Create 1-second clock****************/
 /*************************************************/
 
-always @(posedge clk or posedge reset)
+always @(posedge clock or posedge reset)
 begin
 if(reset) begin
-	tmp_1s <= 0;
-	clk_1s <= 0;
+	temp_1s <= 0;
+	clock_1s <= 0;
 end
 else begin
-	tmp_1s <= tmp_1s + 1;
-	if(tmp_1s <= 5) 
-		clk_1s <= 0;
-	else if (tmp_1s >= 10) begin
-		clk_1s <= 1;
-		tmp_1s <= 1;
+	temp_1s <= temp_1s + 1;
+	if(temp_1s <= 5) 
+		clock_1s <= 0;
+	else if (temp_1s >= 10) begin
+		clock_1s <= 1;
+		temp_1s <= 1;
 	end
 	else
-		clk_1s <= 1;
+		clock_1s <= 1;
 end
 end
 
 /*************************************************/ 
-/***OUTPUT OF THE CLOCK**********************/ 
+/********OUTPUT OF THE CLOCK**********************/ 
 /*************************************************/ 
 
 always @(*) begin
 
-	if(tmp_hour>=20) begin
-		c_hour1 = 2;
+	if(temp_hour>=20) begin
+		clock_hour1 = 2;
 	end
 	else begin
-		if(tmp_hour >=10) 
-			c_hour1  = 1;
+		if(temp_hour >=10) 
+			clock_hour1  = 1;
 		else
-			c_hour1 = 0;
+			clock_hour1 = 0;
 	end
-	c_hour0 = tmp_hour - c_hour1*10; 
-	c_min1 = mod_10(tmp_minute); 
-	c_min0 = tmp_minute - c_min1*10;
-	c_sec1 = mod_10(tmp_second);
-	c_sec0 = tmp_second - c_sec1*10; 
+	clock_hour0 = temp_hour - clock_hour1*10; 
+	clock_min1 = mod_10(temp_minute); 
+	clock_min0 = temp_minute - clock_min1*10;
+	clock_sec1 = mod_10(temp_second);
+	clock_sec0 = temp_second - clock_sec1*10; 
 end
 
-assign H_out1 = c_hour1; // the most significant hour digit of the clock
-assign H_out0 = c_hour0; // the least significant hour digit of the clock
-assign M_out1 = c_min1; // the most significant minute digit of the clock
-assign M_out0 = c_min0; // the least significant minute digit of the clock
-assign S_out1 = c_sec1; // the most significant second digit of the clock
-assign S_out0 = c_sec0; // the least significant second digit of the clock 
+assign hour_out1 = clock_hour1; // the most significant hour digit of the clock
+assign hour_out0 = clock_hour0; // the least significant hour digit of the clock
+assign minute_out1 = clock_min1; // the most significant minute digit of the clock
+assign minute_out0 = clock_min0; // the least significant minute digit of the clock
+assign second_out1 = clock_sec1; // the most significant second digit of the clock
+assign second_out0 = clock_sec0; // the least significant second digit of the clock 
 
 /*************************************************/ 
-/******** Alarm function******************/
+/**************** Alarm function******************/
 /*************************************************/
 
-always @(posedge clk_1s or posedge reset) begin
+always @(posedge clock_1s or posedge reset) begin
 	if(reset) 
 		Alarm <=0; 
 	else begin
-		if({a_hour1,a_hour0,a_min1,a_min0,a_sec1,a_sec0}=={c_hour1,c_hour0,c_min1,c_min0,c_sec1,c_sec0}) begin // if alarm time equals clock time, it will pulse high the Alarm signal with AL_ON=1
-			if(AL_ON) Alarm <= 1; 
+		if({alarm_hour1, alarm_hour0, alarm_min1, alarm_min0, alarm_sec1, alarm_sec0}=={clock_hour1, clock_hour0, clock_min1, clock_min0, clock_sec1, clock_sec0})
+		begin // if alarm time equals clock time, it will pulse high the Alarm signal with Alarm_ON=1
+			if(Alarm_ON) Alarm <= 1; 
 		end
-		if(STOP_al)
-			Alarm <=0; // when STOP_al = 1, push low the Alarm signal
+		if(STOP_alarm)
+			Alarm <=0; // when STOP_alarm = 1, the Alarm signal becomes LOW
 	end
 end
 
 endmodule 
+
