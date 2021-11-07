@@ -63,6 +63,8 @@ module alarm_clock (
 	output [3:0]  minute_out0, 
 	/* minute_out0: The least significant digit of the minute. Valid values are 0 to 9. */
 	output [5:0]  seconds
+	/* seconds: It will interpret seconds as a 6-bit binary number each of which is linked to an LED on the FPGA board. 
+		    The LEDs will glow with the current input second.
 );
  
 // Internal Signal
