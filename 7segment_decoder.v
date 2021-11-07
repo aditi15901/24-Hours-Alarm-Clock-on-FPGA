@@ -18,7 +18,7 @@ begin
   6: display= 7'b0100000; //displays 6
   7: display= 7'b0001111; //displays 7
   8: display= 7'b0000000; //displays 8
-  9: display= 7'b0001100; //displays 9
+  9: display= 7'b0000100; //displays 9
   endcase
 end
 
