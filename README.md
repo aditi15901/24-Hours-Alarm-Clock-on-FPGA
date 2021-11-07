@@ -15,4 +15,4 @@ FILES AND USES:-
   4. constraint.xdc*    : Contains the information about the input/output ports used in the FPGA.
   5. 7seg-driver.v*     : Contains the code for the driver module which will help in displaying the ouput of 7segment-decoder on the FPGA display.
   
- 
+ NOTE:- Starred(*) files can be further modified.
