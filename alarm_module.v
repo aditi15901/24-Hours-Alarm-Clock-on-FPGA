@@ -150,30 +150,13 @@ begin
 end 
 
 /*************************************************/ 
-/*********** Create 1-second clock****************/
+/*** Using Slow Clock to initialize 1 sec clock***/
 /*************************************************/
 
-always @(posedge clock or posedge reset)
-begin
-if(reset) begin
-	temp_1s <= 0;
-	clock_1s <= 0;
-end
-else begin
-	temp_1s <= temp_1s + 1;
-	if(temp_1s <= 5) 
-		clock_1s <= 0;
-	else if (temp_1s >= 10) begin
-		clock_1s <= 1;
-		temp_1s <= 1;
-	end
-	else
-		clock_1s <= 1;
-end
-end
+slowClock sclk(.clk(clock), .new_clk(clock_1s), .reset(reset));
 
 /*************************************************/ 
-/********OUTPUT OF THE CLOCK**********************/ 
+/********Output of the Clock**********************/ 
 /*************************************************/ 
 
 always @(*) begin
