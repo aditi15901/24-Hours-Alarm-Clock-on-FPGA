@@ -62,14 +62,11 @@ module alarm_clock (
 	/* minute_out1: The most significant digit of the minute. Valid values are 0 to 5. */
 	output [3:0]  minute_out0, 
 	/* minute_out0: The least significant digit of the minute. Valid values are 0 to 9. */
-	output [3:0]  second_out1, 
-	/* second_out1: The most significant digit of the seconds. Valid values are 0 to 5. */
-	output [3:0]  second_out0  
-	/* second_out0: The least significant digit of the seconds. Valid values are 0 to 9. */
+	output [5:0]  seconds
 );
  
 // Internal Signal
-reg clock_1s; // 1-second clock
+wire clock_1s; // 1-second clock
 reg [3:0] temp_1s; // count for creating 1-s clock 
 reg [5:0] temp_hour, temp_minute, temp_second; 
 // counter for clock hour, minute and second
@@ -80,11 +77,7 @@ reg [3:0] clock_hour0, alarm_hour0;
 reg [3:0] clock_min1, alarm_min1;
 /* The most significant minute digit of the temp clock and alarm.*/ 
 reg [3:0] clock_min0, alarm_min0;
-/* The least significant minute digit of the temp clock and alarm.*/ 
-reg [3:0] clock_sec1, alarm_sec1;
-/* The most significant second digit of the temp clock and alarm.*/ 
-reg [3:0] clock_sec0, alarm_sec0;
-/* The least significant second digit of the temp clock and alarm.*/ 
+/* The least significant minute digit of the temp clock and alarm.*/
 
 /********************************************************************/ 
 /***************************Function mod10***************************/
@@ -110,8 +103,6 @@ begin
 		alarm_hour0 <= 0;
 		alarm_min1 <= 0;
 		alarm_min0 <= 0;
-		alarm_sec1 <= 0;
-		alarm_sec0 <= 0;
 		temp_hour <= 0;
 		temp_minute <= 0;
 		temp_second <= 0;
@@ -123,8 +114,6 @@ begin
 			alarm_hour0 <= hour_in0;
 			alarm_min1 <= minute_in1;
 			alarm_min0 <= minute_in0;
-			alarm_sec1 <= 0;
-			alarm_sec0 <= 0;
 		end 
 		if(load_time) begin 
 			// load_time =1 => set time to H_in, M_in
@@ -173,16 +162,13 @@ always @(*) begin
 	clock_hour0 = temp_hour - clock_hour1*10; 
 	clock_min1 = mod_10(temp_minute); 
 	clock_min0 = temp_minute - clock_min1*10;
-	clock_sec1 = mod_10(temp_second);
-	clock_sec0 = temp_second - clock_sec1*10; 
 end
 
 assign hour_out1 = clock_hour1; // the most significant hour digit of the clock
 assign hour_out0 = clock_hour0; // the least significant hour digit of the clock
 assign minute_out1 = clock_min1; // the most significant minute digit of the clock
 assign minute_out0 = clock_min0; // the least significant minute digit of the clock
-assign second_out1 = clock_sec1; // the most significant second digit of the clock
-assign second_out0 = clock_sec0; // the least significant second digit of the clock 
+assign seconds = temp_second;	//	the entire second number
 
 /*************************************************/ 
 /**************** Alarm function******************/
@@ -192,7 +178,7 @@ always @(posedge clock_1s or posedge reset) begin
 	if(reset) 
 		Alarm <=0; 
 	else begin
-		if({alarm_hour1, alarm_hour0, alarm_min1, alarm_min0, alarm_sec1, alarm_sec0}=={clock_hour1, clock_hour0, clock_min1, clock_min0, clock_sec1, clock_sec0})
+		if({alarm_hour1, alarm_hour0, alarm_min1, alarm_min0}=={clock_hour1, clock_hour0, clock_min1, clock_min0})
 		begin // if alarm time equals clock time, it will pulse high the Alarm signal with Alarm_ON=1
 			if(Alarm_ON) Alarm <= 1; 
 		end
