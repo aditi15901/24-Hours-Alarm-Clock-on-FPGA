@@ -1,4 +1,4 @@
-//decoder module for 7segment displaylay
+//decoder module for 7segment display
 //design sources
 
 module display_decoder(

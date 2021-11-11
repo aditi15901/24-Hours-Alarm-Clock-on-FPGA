@@ -1,6 +1,3 @@
-
-`timescale 1ns/1ps
-
 module driver_module(
 	input [6:0]	num0,
 	input [6:0]	num1,
@@ -13,12 +10,13 @@ module driver_module(
 );
 
 reg [1:0] counter;
+reg [9:0] sclk;
 
-initial begin
-	counter <= 0;
+always @(posedge clk) begin
+	sclk <= sclk + 1;
 end
 
-always @(posedge clk or posedge reset) begin
+always @(posedge sclk[9] or posedge reset) begin
 	if(reset) begin
 		counter <= 0;
 		an <= 4'b0000;
