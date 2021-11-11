@@ -181,7 +181,7 @@ always @(posedge clock_1s or posedge reset) begin
 	if(reset) 
 		Alarm <=0; 
 	else begin
-		if({alarm_hour1, alarm_hour0, alarm_min1, alarm_min0}=={clock_hour1, clock_hour0, clock_min1, clock_min0})
+		if({alarm_hour1, alarm_hour0, alarm_min1, alarm_min0, 6'd0}=={clock_hour1, clock_hour0, clock_min1, clock_min0, seconds})
 		begin // if alarm time equals clock time, it will pulse high the Alarm signal with Alarm_ON=1
 			if(Alarm_ON) Alarm <= 1; 
 		end
