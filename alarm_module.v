@@ -102,8 +102,8 @@ always @(posedge clock_1s or posedge reset )
 begin
 	if(reset) begin 
 		// if reset HIGH => alarm time to 00.00.00, Alarm to LOW, clock to hour_in and minute_in and seconds to 00
-		alarm_hour1 <= 0;
-		alarm_hour0 <= 0;
+		alarm_hour1 <= 2;
+		alarm_hour0 <= 4;
 		alarm_min1 <= 0;
 		alarm_min0 <= 0;
 		temp_hour <= 0;
