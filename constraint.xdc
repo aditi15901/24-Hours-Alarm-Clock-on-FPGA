@@ -2,20 +2,20 @@
 
 ##	GUIDE FOR FPGA BOARD.
 ##	Switches sw 0-3        : LSD of minute input.
-##	Switches sw 4-7.       : MSD of minute input.
-##	Switches sw 8-11.      : LSD of hour input.
-##	Switches sw 12-13.     : MSD of hour input.
+##	Switches sw 4-7        : MSD of minute input.
+##	Switches sw 8-11       : LSD of hour input.
+##	Switches sw 12-13      : MSD of hour input.
 ##	Switch 	 sw 15         : To turn on/off the alarm functionality.
 ##
 ##	Center Button          : Reset the clock.
 ##	Right Button           : Load the alarm time onto the clock.
-##	Left Button.           : Load the clock time.
-##	Up Button.             : To bring the alarm signal to LOW.
+##	Left Button            : Load the clock time.
+##	Up Button              : To bring the alarm signal to LOW.
 ##
-##	Display an 0:		LSD of minute output.
-##	Display an 1:		MSD of minute output.
-##	Display an 2:		LSD of hour output.
-##	Display an 3:		MSD of hour output.
+##	Display an 0	       : LSD of minute output.
+##	Display an 1	       : MSD of minute output.
+##	Display an 2	       : LSD of hour output.
+##	Display an 3	       : MSD of hour output.
 
 
 ## Clock signal
@@ -126,7 +126,7 @@ set_property PACKAGE_PIN T18 [get_ports btn[3]]
 set_property PACKAGE_PIN T17 [get_ports btn[2]]						
 	set_property IOSTANDARD LVCMOS33 [get_ports btn[2]]
 	
-#load_time :LEFT BUTTON
+##load_time :LEFT BUTTON
 set_property PACKAGE_PIN W19 [get_ports btn[1]]						
 	set_property IOSTANDARD LVCMOS33 [get_ports btn[1]]
 	
