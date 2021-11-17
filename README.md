@@ -20,15 +20,18 @@ FILES AND USES:-
   8. tone_generator.v     : Contains the module for generating the tone of the piezo buzzer when the Alarm goes off.
 
 GUIDE FOR FPGA BOARD:
-Switches-
-  1. sw 0-3                  : LSD of minute input.
-  2. sw 4-7                  : MSD of minute input.
-  3. sw 8-11                 : LSD of hour input.
-  4. sw 12-13                : MSD of hour input.
-  5. sw 15                   : To turn on/off the alarm functionality.
 
-Buttons-
-  1. Center Button          : Reset the clock.
-  2. Right Button           : Load the alarm time onto the clock.
-  3. Left Button            : Load the clock time.
-  4. Up Button              : To bring the alarm signal to LOW. (Stop alarm button)
+Switches:-
+  1. sw 0-3               : LSD of minute input.
+  2. sw 4-7               : MSD of minute input.
+  3. sw 8-11.             : LSD of hour input.
+  4. sw 12-13             : MSD of hour input.
+  5. sw 15                : To turn on/off the alarm functionality.
+
+Buttons:-
+  1. Center Button        : Reset the clock.
+  2. Right Button         : Load the alarm time onto the clock.
+  3. Left Button          : Load the clock time.
+  4. Up Button            : To bring the alarm signal to LOW.
+
+A Piezo Buzzer is connected to the FPGA board through a breadboard and connecting wires. It goes off when Alarm is high.
