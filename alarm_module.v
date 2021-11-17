@@ -11,10 +11,9 @@
 
 module alarm_clock ( 
 	input reset,  
-	/* reset: It is an active high reset pulse used to set the time to the input hour and minute 
-	          (as defined by the hour_in1, hour_in0, minute_in1, and minute_in0 inputs) and the second to 00. It 
-			  also sets the alarm value to 0.00.00, and sets the Alarm (output) LOW. For normal 
-			  operation, this input pin is set to 0.
+	/* reset: It is an active high reset pulse used to set the time to the input hour and minute (as defined by 
+	          the hour_in1, hour_in0, minute_in1, and minute_in0 inputs) and the second to 00. It also sets the 
+		  alarm value to 0.00.00, and sets the Alarm (output) LOW. For normal operation, this input pin is set to 0.
 	*/
 	input clock,  
 	/* clock: A 100MHz input clock used to generate each real-time second */
@@ -28,7 +27,7 @@ module alarm_clock (
 	*/
 	input [3:0] minute_in1,
 	/* minute_in1: A 4-bit input used to set the most significant minute digit of the clock (if load_time=1),
-				   or the most significant minute digit of the alarm (if load_alarm=1). Valid values are 0 to 5.
+		       or the most significant minute digit of the alarm (if load_alarm=1). Valid values are 0 to 5.
 	*/
 	input [3:0] minute_in0, 
 	/* minute_in0: A 4-bit input used to set the least significant minute digit of the clock (if load_time=1),
@@ -37,21 +36,21 @@ module alarm_clock (
 	input load_time,  
 	/* load_time: If load_time=1, the time should be set to the values on the inputs hour_in1, hour_in0, minute_in1, and 
 	              minute_in0.The second time should be set to 0.If load_time=0, the clock should act normally 
-				 (i.e. second should be incremented every 10 clock cycles).
+		      (i.e. second should be incremented every 10 clock cycles).
 	*/
 	input   load_alarm,  
 	/* load_alarm: If load_alarm = 1, the alarm time should be set to the values on the inputs hour_in1, hour_in0, minute_in1,
-				   and minute_in0. If load_alarm = 0, then the clock functions normally. 
+		       and minute_in0. If load_alarm = 0, then the clock functions normally. 
 	*/ 
 	input   STOP_alarm,  
 	/* STOP_alarm: If the Alarm (output) is HIGH then STOP_alarm = 1 will bring the output back to LOW. */ 
 	input   Alarm_ON,  
 	/* Alarm_ON: If HIGH, the alarm is ON (and Alarm will go HIGH if the alarm time equals the real time). If low the 
-				 the alarm function is OFF. 
+		     the alarm function is OFF. 
 	*/
 	output reg Alarm,  
 	/* Alarm: This will go HIGH if the alarm time equals the current time, and Alarm_ON is HIGH. This will remain HIGH
-			  until STOP_alarm goes HIGH, which will bring Alarm back to LOW.
+		  until STOP_alarm goes HIGH, which will bring Alarm back to LOW.
 	*/
 	output [1:0]  hour_out1, 
 	/* hour_out1: The most significant digit of the hour. Valid values are 0 to 2. */
@@ -102,7 +101,7 @@ endfunction
 always @(posedge clock_1s or posedge reset )
 begin
 	if(reset) begin 
-		// if reset HIGH => alarm time to 24:00
+		// if reset HIGH => alarm time set to 24:00
 		alarm_hour1 <= 2;
 		alarm_hour0 <= 4;
 		alarm_min1 <= 0;
