@@ -10,7 +10,8 @@ module clock(
 	*/
 	output [6:0] led,
 	output [6:0] seg,
-	output [3:0] an
+	output [3:0] an,
+	ooutput sound
 );
 
 wire [1:0] h_out1;
@@ -27,7 +28,8 @@ alarm_clock aclk(.clock(clk), .reset(btn[0]), .minute_in0({sw[3], sw[2], sw[1], 
 											.hour_out1(h_out1),
 											.minute_out0(m_out0),
 											.minute_out1(m_out1),
-											.seconds(led[5:0])
+		 									.seconds(led[5:0]),
+		 									.sound(sound)
 											);
 
 display_decoder dd0(.in(m_out0), .display(n0));
