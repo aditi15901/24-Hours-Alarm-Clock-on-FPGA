@@ -16,4 +16,5 @@ FILES AND USES:-
   5. 7seg-driver.v        : Contains the code for the driver module which will help in displaying the output of 7segment-decoder on the FPGA display.
   6. top_module.v         : Takes input from FPGA and displays the output in 7segment display after calling the alarm_clock and display_decoder modules.
   7. Module Hierarchy.pdf : Contains the module hierarchy of our Project.
+  8. tone_generator.v     : Contains the module for generating the tone of the piezo buzzer when the Alarm goes off.
   
