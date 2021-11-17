@@ -1,16 +1,16 @@
-##constraint file for alarm clock
+##Constraint file for Alarm Clock
 
 ##	GUIDE FOR FPGA BOARD.
-##	Switches sw 0-3:	LSD of minute input.
-##	Switches sw 4-7:	MSD of minute input.
-##	Switches sw 8-11:	LSD of hour input.
-##	Switches sw 12-13:	MSD of hour input.
-##	Switch 	 sw 15:		To turn on/off the alarm functionality.
+##	Switches sw 0-3        : LSD of minute input.
+##	Switches sw 4-7.       : MSD of minute input.
+##	Switches sw 8-11.      : LSD of hour input.
+##	Switches sw 12-13.     : MSD of hour input.
+##	Switch 	 sw 15         : To turn on/off the alarm functionality.
 ##
-##	Center Button:		Reset the clock.
-##	Right Button:		Load the alarm time onto the clock.
-##	Left Button:		Load the clock time.
-##	Up Button:		To bring the alarm signal to LOW.
+##	Center Button          : Reset the clock.
+##	Right Button           : Load the alarm time onto the clock.
+##	Left Button.           : Load the clock time.
+##	Up Button.             : To bring the alarm signal to LOW.
 ##
 ##	Display an 0:		LSD of minute output.
 ##	Display an 1:		MSD of minute output.
@@ -19,9 +19,11 @@
 
 
 ## Clock signal
+
 set_property PACKAGE_PIN W5 [get_ports clk]							
 	set_property IOSTANDARD LVCMOS33 [get_ports clk]
 	create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports clk]
+	
 	
 ## Switches
 
@@ -112,19 +114,19 @@ set_property PACKAGE_PIN L1 [get_ports {led[6]}]
 	
 ##Buttons
 
-##reset button	CENTRAL BUTTON
+##reset : CENTRAL BUTTON
 set_property PACKAGE_PIN U18 [get_ports btn[0]]						
 	set_property IOSTANDARD LVCMOS33 [get_ports btn[0]]
 
-##STOP_alarm UP BUTTON
+##STOP_alarm : UP BUTTON
 set_property PACKAGE_PIN T18 [get_ports btn[3]]						
 	set_property IOSTANDARD LVCMOS33 [get_ports btn[3]]
 	
-##load_alarm  RIGHT BUTTON
+##load_alarm :  RIGHT BUTTON
 set_property PACKAGE_PIN T17 [get_ports btn[2]]						
 	set_property IOSTANDARD LVCMOS33 [get_ports btn[2]]
 	
-#load_time LEFT BUTTON
+#load_time :LEFT BUTTON
 set_property PACKAGE_PIN W19 [get_ports btn[1]]						
 	set_property IOSTANDARD LVCMOS33 [get_ports btn[1]]
 	
@@ -162,7 +164,7 @@ set_property PACKAGE_PIN W4 [get_ports {an[3]}]
 	set_property IOSTANDARD LVCMOS33 [get_ports {an[3]}]
 	
 	
-##pmod Jc
+##pmod Jc for the piezo buzzer
 ##JC4 PORT-connected to positive terminal of buzzer
 	set_property PACKAGE_PIN P18 [get_ports sound]
 set_property IOSTANDARD LVCMOS33 [get_ports sound]
