@@ -42,7 +42,7 @@ module alarm_clock (
 	*/
 	input   load_alarm,  
 	/* load_alarm: If load_alarm = 1, the alarm time should be set to the values on the inputs hour_in1, hour_in0, minute_in1,
-				   and minute_in0. If load_alarm = 0, then there y. 
+				   and minute_in0. If load_alarm = 0, then the clock should function normally.. 
 	*/ 
 	input   STOP_alarm,  
 	/* STOP_alarm: If the Alarm (output) is HIGH then STOP_alarm = 1 will bring the output back to LOW. */ 
@@ -101,7 +101,7 @@ endfunction
 always @(posedge clock_1s or posedge reset )
 begin
 	if(reset) begin 
-		// if reset HIGH => alarm time to 00.00.00, Alarm to LOW, clock to hour_in and minute_in and seconds to 00
+		// if reset HIGH => alarm time to 24:00
 		alarm_hour1 <= 2;
 		alarm_hour0 <= 4;
 		alarm_min1 <= 0;
@@ -112,14 +112,14 @@ begin
 	end 
 	else begin
 		if(load_alarm) begin 
-			// load_alarm = 1 => set alarm clock to H_in, M_in
+			// load_alarm = 1 => set alarm clock to hour_in, minute_in
 			alarm_hour1 <= hour_in1;
 			alarm_hour0 <= hour_in0;
 			alarm_min1 <= minute_in1;
 			alarm_min0 <= minute_in0;
 		end 
 		if(load_time) begin 
-			// load_time =1 => set time to H_in, M_in
+			// load_time =1 => set time to hour_in, minute_in
 			temp_hour <= hour_in1*10 + hour_in0;
 			temp_minute <= minute_in1*10 + minute_in0;
 			temp_second <= 0;
@@ -171,7 +171,7 @@ assign hour_out1 = clock_hour1; // the most significant hour digit of the clock
 assign hour_out0 = clock_hour0; // the least significant hour digit of the clock
 assign minute_out1 = clock_min1; // the most significant minute digit of the clock
 assign minute_out0 = clock_min0; // the least significant minute digit of the clock
-assign seconds = temp_second;	//	the entire second number
+assign seconds = temp_second;	// the entire seconds value
 
 /*************************************************/ 
 /**************** Alarm function******************/
