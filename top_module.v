@@ -3,10 +3,10 @@ module clock(
 	input [14:0] sw,
 	input [3:0]  btn,
 	/*
-	btn[0]: RESET
-	btn[1]: LOAD_TIME
-	btn[2]: LOAD_ALARM
-	btn[3]: STOP_ALARM
+	btn[0]: reset
+	btn[1]: load_time
+	btn[2]: load_alarm
+	btn[3]: STOP_alarm
 	*/
 	output [6:0] led,
 	output [6:0] seg,
