@@ -11,7 +11,7 @@ module clock(
 	output [6:0] led,
 	output [6:0] seg,
 	output [3:0] an,
-	ooutput sound
+	output sound
 );
 
 wire [1:0] h_out1;
