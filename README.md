@@ -4,7 +4,7 @@ CS203-Project
 GROUP MEMBERS :-
 • Aditi Das – 2020CSB1064
 • Jugal Chapatwala – 2020CSB1082
-• Shruti Sikri – 2020CSB11280
+• Shruti Sikri – 2020CSB1128
 
 IMPLEMENTING A SIMPLE ALARM CLOCK ON FPGA BOARD (BASYS3) WITH PIEZO BUZZER
 
@@ -23,7 +23,7 @@ GUIDE FOR FPGA BOARD:
 Switches-
   1. sw 0-3                  : LSD of minute input.
   2. sw 4-7                  : MSD of minute input.
-  3. sw 8-11.                : LSD of hour input.
+  3. sw 8-11                 : LSD of hour input.
   4. sw 12-13                : MSD of hour input.
   5. sw 15                   : To turn on/off the alarm functionality.
 
@@ -31,4 +31,4 @@ Buttons-
   1. Center Button          : Reset the clock.
   2. Right Button           : Load the alarm time onto the clock.
   3. Left Button            : Load the clock time.
-  4. Up Button              : To bring the alarm signal to LOW.
+  4. Up Button              : To bring the alarm signal to LOW. (Stop alarm button)
