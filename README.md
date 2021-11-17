@@ -24,7 +24,7 @@ GUIDE FOR FPGA BOARD:
 Switches:-
   1. sw 0-3               : LSD of minute input.
   2. sw 4-7               : MSD of minute input.
-  3. sw 8-11.             : LSD of hour input.
+  3. sw 8-11              : LSD of hour input.
   4. sw 12-13             : MSD of hour input.
   5. sw 15                : To turn on/off the alarm functionality.
 
