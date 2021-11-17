@@ -6,7 +6,7 @@ GROUP MEMBERS :-
 • Jugal Chapatwala – 2020CSB1082
 • Shruti Sikri – 2020CSB11280
 
-IMPLEMENTING A SIMPLE ALARM CLOCK WITH FPGA BOARD (BASYS3) AND BUZZER
+IMPLEMENTING A SIMPLE ALARM CLOCK WITH FPGA BOARD (BASYS3) AND PIEZO BUZZER
 
 FILES AND USES:-
   1. alarm_module.v.      : Contains the module of the base Alarm Clock functionality.
