@@ -1,6 +1,6 @@
-//Module to generate a slow clock
-//reducing frequency from 100Mhz to 1Hz
-//creating a 1second clock
+// Module to generate a slow clock
+// Reducing frequency from 100Mhz (for Basys3) to 1Hz 
+// Creating a 1-second clock
 
 module slowClock(clk, reset, new_clk);
 input clk, reset;
