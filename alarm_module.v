@@ -13,7 +13,7 @@ module alarm_clock (
 	input reset,  
 	/* reset: It is an active high reset pulse used to set the time to the input hour and minute (as defined by 
 	          the hour_in1, hour_in0, minute_in1, and minute_in0 inputs) and the second to 00. It also sets the 
-		  alarm value to 0.00.00, and sets the Alarm (output) LOW. For normal operation, this input pin is set to 0.
+		  alarm value to 24.00.00, and sets the Alarm (output) LOW. For normal operation, this input pin is set to 0.
 	*/
 	input clock,  
 	/* clock: A 100MHz input clock used to generate each real-time second */
@@ -36,7 +36,7 @@ module alarm_clock (
 	input load_time,  
 	/* load_time: If load_time=1, the time should be set to the values on the inputs hour_in1, hour_in0, minute_in1, and 
 	              minute_in0.The second time should be set to 0.If load_time=0, the clock should act normally 
-		      (i.e. second should be incremented every 10 clock cycles).
+		      (i.e. second should be incremented every 1 clock cycle).
 	*/
 	input   load_alarm,  
 	/* load_alarm: If load_alarm = 1, the alarm time should be set to the values on the inputs hour_in1, hour_in0, minute_in1,
@@ -101,7 +101,7 @@ endfunction
 always @(posedge clock_1s or posedge reset )
 begin
 	if(reset) begin 
-		// if reset HIGH => alarm time set to 24:00
+		// if reset HIGH => alarm time set to 24:00, clock time set to 00:00
 		alarm_hour1 <= 2;
 		alarm_hour0 <= 4;
 		alarm_min1 <= 0;
@@ -202,6 +202,6 @@ tone_generator buzzer(
   .sound(sound)
 );
 
-assign tone = Alarm? 22'd125000:22'd0;
+assign tone = Alarm? 22'd125000:22'd0; //The buzzer will sound when the alarm goes off
 	
 endmodule
