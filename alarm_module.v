@@ -1,4 +1,3 @@
-
 /*				CS203 Project
 
 	Implementing a Simple Alarm Clock on FPGA
@@ -42,7 +41,7 @@ module alarm_clock (
 	*/
 	input   load_alarm,  
 	/* load_alarm: If load_alarm = 1, the alarm time should be set to the values on the inputs hour_in1, hour_in0, minute_in1,
-				   and minute_in0. If load_alarm = 0, then the clock should function normally.. 
+				   and minute_in0. If load_alarm = 0, then there y. 
 	*/ 
 	input   STOP_alarm,  
 	/* STOP_alarm: If the Alarm (output) is HIGH then STOP_alarm = 1 will bring the output back to LOW. */ 
@@ -62,10 +61,12 @@ module alarm_clock (
 	/* minute_out1: The most significant digit of the minute. Valid values are 0 to 5. */
 	output [3:0]  minute_out0, 
 	/* minute_out0: The least significant digit of the minute. Valid values are 0 to 9. */
-	output [5:0]  seconds
+	output [5:0]  seconds,
 	/* seconds: It will interpret seconds as a 6-bit binary number each of which is linked to an LED on the FPGA board. 
 		    The LEDs will glow with the current input second.
         */
+	output sound
+	/sound: Used to sound the piezo buzzer/
 );
  
 // Internal Signal
@@ -82,10 +83,10 @@ reg [3:0] clock_min1, alarm_min1;
 reg [3:0] clock_min0, alarm_min0;
 /* The least significant minute digit of the temp clock and alarm.*/
 
-/********************************************************************/ 
-/***************************Function mod10***************************/
+/************************/ 
+/**********Function mod10**********/
 /*Function to extract the MSD ( most significant digit) of a number */
-/********************************************************************/ 
+/************************/ 
 
 function [3:0] mod_10;
 	input [5:0] number;
@@ -94,14 +95,14 @@ function [3:0] mod_10;
 	end
 endfunction
 
-/*************************************************/ 
-/************* Clock operation********************/
-/*************************************************/
+/*****************/ 
+/***** Clock operation********/
+/*****************/
 
 always @(posedge clock_1s or posedge reset )
 begin
 	if(reset) begin 
-		// if reset HIGH => alarm time to 24:00
+		// if reset HIGH => alarm time to 00.00.00, Alarm to LOW, clock to hour_in and minute_in and seconds to 00
 		alarm_hour1 <= 2;
 		alarm_hour0 <= 4;
 		alarm_min1 <= 0;
@@ -112,14 +113,14 @@ begin
 	end 
 	else begin
 		if(load_alarm) begin 
-			// load_alarm = 1 => set alarm clock to hour_in, minute_in
+			// load_alarm = 1 => set alarm clock to H_in, M_in
 			alarm_hour1 <= hour_in1;
 			alarm_hour0 <= hour_in0;
 			alarm_min1 <= minute_in1;
 			alarm_min0 <= minute_in0;
 		end 
 		if(load_time) begin 
-			// load_time =1 => set time to hour_in, minute_in
+			// load_time =1 => set time to H_in, M_in
 			temp_hour <= hour_in1*10 + hour_in0;
 			temp_minute <= minute_in1*10 + minute_in0;
 			temp_second <= 0;
@@ -141,15 +142,15 @@ begin
 	end
 end 
 
-/*************************************************/ 
-/*** Using Slow Clock to initialize 1 sec clock***/
-/*************************************************/
+/*****************/ 
+/* Using Slow Clock to initialize 1 sec clock***/
+/*****************/
 
 slowClock sclk(.clk(clock), .new_clk(clock_1s), .reset(reset));
 
-/*************************************************/ 
-/********Output of the Clock**********************/ 
-/*************************************************/ 
+/*****************/ 
+/***Output of the Clock*******/ 
+/*****************/ 
 
 always @(*) begin
 
@@ -171,11 +172,11 @@ assign hour_out1 = clock_hour1; // the most significant hour digit of the clock
 assign hour_out0 = clock_hour0; // the least significant hour digit of the clock
 assign minute_out1 = clock_min1; // the most significant minute digit of the clock
 assign minute_out0 = clock_min0; // the least significant minute digit of the clock
-assign seconds = temp_second;	// the entire seconds value
+assign seconds = temp_second;	//	the entire second number
 
-/*************************************************/ 
-/**************** Alarm function******************/
-/*************************************************/
+/*****************/ 
+/****** Alarm function********/
+/*****************/
 
 always @(posedge clock_1s or posedge reset) begin
 	if(reset) 
@@ -189,6 +190,18 @@ always @(posedge clock_1s or posedge reset) begin
 			Alarm <=0; // when STOP_alarm = 1, the Alarm signal becomes LOW
 	end
 end
+	
+/*****************/ 
+/****** Piezo Buzzer*******/
+/*****************/
+wire [21:0] tone;
 
-endmodule 
+tone_generator buzzer(
+  .clk(clock),
+  .tone(tone),
+  .sound(sound)
+);
 
+assign tone = Alarm? 22'd125000:22'd0;
+	
+endmodule
