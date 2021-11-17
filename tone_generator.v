@@ -1,7 +1,7 @@
 //MODULE for alarm buzzer
 //Single tone generator
 //Rings when alarm goes off
-//Stopes when STOP_alarm button is pressed
+//Stops when STOP_alarm button is pressed
 
 module tone_generator( clk, tone, sound );
 
