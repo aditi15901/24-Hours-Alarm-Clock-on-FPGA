@@ -1,5 +1,5 @@
-//decoder module for 7segment display
-//design sources
+//Decoder module for 7segment display
+//Design sources
 
 module display_decoder(
     input [3:0] in,
@@ -9,7 +9,7 @@ module display_decoder(
 always @(in)
 begin
   case(in)
-  0: display= 7'b0000001; //displays zero on the seven segment
+  0: display= 7'b0000001; //displays 0 on the seven segment
   1: display= 7'b1001111; //displays 1 on the seven segment
   2: display= 7'b0010010; //displays 2 on the seven segment
   3: display= 7'b0000110; //displays 3 on the seven segment
