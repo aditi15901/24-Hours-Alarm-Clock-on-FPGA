@@ -31,6 +31,12 @@
 4. **sw 12-13**                : MSD of hour input.
 5. **sw 15**                   : To turn on/off the alarm functionality.
 
+#### LEDs:-
+1. **Leds 0-5**               : Displays the seconds in binary notation. It displays seconds from 0 to 59, after which it resets to 0 and starts over. 
+                                Hence, LEDs 0-5 glow according to the current second in binary.
+2. **Led 15**                 : Glows when the Alarm sets off along with the Buzzer tone.
+
+
 #### Buttons-
 
 1. **Center Button**          : Resets the clock i.e. alarm time and clock time to 24:00 and 00:00 respectively.
@@ -39,6 +45,3 @@
 4. **Up Button**              : To bring the alarm signal to LOW.
 
 A **Piezo Buzzer** is connected to the FPGA board through a breadboard and connecting wires. It goes off when Alarm is high.
-
-LEDs 0-5 display the seconds in binary notation. It displays seconds from 0 to 59, after which it resets to 0 and starts over. Hence, LEDs glow according 
-to the current second in binary.
