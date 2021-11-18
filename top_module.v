@@ -12,16 +12,17 @@ module clock(
 	input [3:0]  btn,
 	//	Connect all the FPGA buttons here
 	/*
-	btn[0]: RESET
-	btn[1]: LOAD_TIME
-	btn[2]: LOAD_ALARM
-	btn[3]: STOP_ALARM
+	btn[0]: reset
+	btn[1]: load_time
+	btn[2]: load_alarm
+	btn[3]: STOP_alarm
 	*/
 	output [6:0] led,
 	//	Connect them with FPGA leds
 	output [6:0] seg,
 	output [3:0] an
 	//	Connect them with the 7-seg display of the FPGA
+	output sound
 );
 
 wire [1:0] h_out1;
@@ -39,7 +40,8 @@ alarm_clock aclk(.clock(clk), .reset(btn[0]), .minute_in0({sw[3], sw[2], sw[1], 
 											.hour_out1(h_out1),
 											.minute_out0(m_out0),
 											.minute_out1(m_out1),
-											.seconds(led[5:0])
+		 									.seconds(led[5:0]),
+		 									.sound(sound)
 											);
 
 //	Setting up connections for display_decoder module written in "7segment_decoder.v"
