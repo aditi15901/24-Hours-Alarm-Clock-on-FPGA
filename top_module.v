@@ -1,7 +1,7 @@
 
 /*
-	The purpose of this clock module is to instantiate and set up connections for all the sub-modules. Along with it provide
-	interface of variables that are used in "constraint.xcd" file to set-up connections with buttons, switches, leds and displays
+	The purpose of this clock module is to instantiate and set up connections for all the sub-modules. It also provides
+	interface of variables that are used in "constraint.xcd" file to set-up connections with buttons, switches, leds and displays.
 */
 
 module clock(
