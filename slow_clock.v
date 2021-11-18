@@ -1,9 +1,9 @@
 
-// This module is used to set an internal clock of 1 second that can used to track the passage of time in our system
+// This module is used to set an internal clock of 1 second that can be used to track the passage of time in our system
 
 module slowClock(
 	input clk,
-	//	The original clock that needs to slowed down i.e. the 100MHz clock of FPGA
+	//	The original clock that needs to be slowed down i.e. the 100MHz clock of FPGA
 	input reset,
 	//	To reset the output clock signal to initial value
 	output reg new_clk
