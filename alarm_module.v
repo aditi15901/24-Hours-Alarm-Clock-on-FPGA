@@ -1,15 +1,3 @@
-
-/*				CS203 Project
-
-	Implementing a Simple Alarm Clock on FPGA
-
-    Group Members:
-	1. Aditi Das 2020csb1064
-	2. Jugal Chapatwala 2020csb1082
-	3. Shruti Sikri 2020csb1128
-
-*/
-
 module alarm_clock ( 
 	input reset,  
 	/* reset: It is an active high reset pulse used to set the time to the input hour and minute 
@@ -38,7 +26,7 @@ module alarm_clock (
 	input load_time,  
 	/* load_time: If load_time=1, the time should be set to the values on the inputs hour_in1, hour_in0, minute_in1, and 
 	              minute_in0.The second time should be set to 0.If load_time=0, the clock should act normally 
-				 (i.e. second should be incremented every 10 clock cycles).
+				  (i.e. second should be incremented every 10 clock cycles).
 	*/
 	input   load_alarm,  
 	/* load_alarm: If load_alarm = 1, the alarm time should be set to the values on the inputs hour_in1, hour_in0, minute_in1,
@@ -64,8 +52,8 @@ module alarm_clock (
 	/* minute_out0: The least significant digit of the minute. Valid values are 0 to 9. */
 	output [5:0]  seconds
 	/* seconds: It will interpret seconds as a 6-bit binary number each of which is linked to an LED on the FPGA board. 
-		    The LEDs will glow with the current input second.
-        */
+				The LEDs will glow with the current input second.
+    */
 );
  
 // Internal Signal
@@ -145,6 +133,7 @@ end
 /*** Using Slow Clock to initialize 1 sec clock***/
 /*************************************************/
 
+//	Making connections for the slowClock module written in "slow_clock.v"
 slowClock sclk(.clk(clock), .new_clk(clock_1s), .reset(reset));
 
 /*************************************************/ 
@@ -189,6 +178,20 @@ always @(posedge clock_1s or posedge reset) begin
 			Alarm <=0; // when STOP_alarm = 1, the Alarm signal becomes LOW
 	end
 end
+
+/************************************************/ 
+/*****************Piezo Buzzer*******************/
+/************************************************/
+
+wire [21:0] tone;
+
+tone_generator buzzer(
+  .clk(clock),
+  .tone(tone),
+  .sound(sound)
+);
+
+assign tone = Alarm? 22'd125000:22'd0;
 
 endmodule 
 
