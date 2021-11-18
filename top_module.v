@@ -1,12 +1,7 @@
-/*				CS203 Project
 
-	Implementing a Simple Alarm Clock on FPGA
-
-    Group Members:
-	1. Aditi Das 2020csb1064
-	2. Jugal Chapatwala 2020csb1082
-	3. Shruti Sikri 2020csb1128
-
+/*
+	The purpose of this clock module is to instantiate and set up connections for all the sub-modules. Along with it provide
+	interface of variables that are used in "constraint.xcd" file to set-up connections with buttons, switches, leds and displays
 */
 
 module clock(

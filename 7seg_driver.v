@@ -1,3 +1,11 @@
+
+/*
+	The driver module is needed because in the in-built 7-seg display of the FPGA board the corresponding segments of each
+	display (left, center-left, center-right and right) have a common cathode. The anodes are different though, so we can choose
+	which display is to remain active. The driver module rapidy flips through the displays and the number that needs to be
+	displayed in order to trick human eye into believing that each display is showing a different number.
+*/
+
 module driver_module(
 	input [6:0]	num0,
 	//	The number that is to be displayed in the rightmost display
@@ -13,20 +21,16 @@ module driver_module(
 	//	To reset the display
 	output reg [6:0] num,
 	output reg [3:0] an
-	//	These outputs should be feeded to the 7-seg display in order to display the above 4 numbers in the correct order
+	//	These outputs should be fed to the 7-seg display in order to display the above 4 numbers in the correct order
 );
-
-/*
-	The driver module is needed because in the in-built 7-seg display of the FPGA board the corresponding segments of each
-	display (left, center-left, center-right and right) have a common cathode. The anodes are different though so we can choose
-	which display is to remain active. The driver module rapidy flips through the displays and the number that needs to be
-	displayed in order to trick human eye into believing that each display is showing a different number.
-*/
 
 reg [1:0] counter;
 //	To flip through the different anodes
 reg [9:0] sclk;
-//	The FPGA in-built clock was proving too fast as the numbers vanished rapidly. To counter this we slowed the flipping process a bit
+/*
+	The FPGA in-built clock was proving too fast as the numbers vanished rapidly. To counter this we slowed the flipping process a bit
+	by introducing sclk which increases with each posedge of clk and then setting the MSB of sclk as clock for our processes
+*/
 
 always @(posedge clk) begin
 	sclk <= sclk + 1;

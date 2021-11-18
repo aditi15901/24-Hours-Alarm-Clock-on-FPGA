@@ -1,3 +1,10 @@
+
+/*
+	This module is the core module of our system. It is responsible for all the clock and alarm functionalities in our alarm clock.
+	It gauges passage of time, maintains an internal clock, outputs the current time, stores the alarm time, outputs whether or not
+	the current clock time is equal to alarm time and also connects to the buzzer system to generate sound when alarm goes off
+*/
+
 module alarm_clock ( 
 	input reset,  
 	/* reset: It is an active high reset pulse used to set the time to the input hour and minute 
@@ -89,7 +96,12 @@ endfunction
 always @(posedge clock_1s or posedge reset )
 begin
 	if(reset) begin 
-		// if reset HIGH => alarm time to 00.00.00, Alarm to LOW, clock to hour_in and minute_in and seconds to 00
+		/*
+			if reset HIGH:
+				Alarm time is set to 24.00.00. This is done so that the it practically unsets any preset alarm
+				Alarm signal is set to LOW
+				Clock is set to 00.00.00
+		*/
 		alarm_hour1 <= 2;
 		alarm_hour0 <= 4;
 		alarm_min1 <= 0;
@@ -100,29 +112,39 @@ begin
 	end 
 	else begin
 		if(load_alarm) begin 
-			// load_alarm = 1 => set alarm clock to H_in, M_in
+			/* 
+				load_alarm = 1:
+				Set Alarm time to hour_in, minute_in
+			*/
 			alarm_hour1 <= hour_in1;
 			alarm_hour0 <= hour_in0;
 			alarm_min1 <= minute_in1;
 			alarm_min0 <= minute_in0;
 		end 
 		if(load_time) begin 
-			// load_time =1 => set time to H_in, M_in
+			/*
+				load_time = 1:
+				Set Clock time to hour_in, minute_in
+			*/
 			temp_hour <= hour_in1*10 + hour_in0;
 			temp_minute <= minute_in1*10 + minute_in0;
 			temp_second <= 0;
 		end 
-		else begin  // load_time =0 , clock operates normally
+		else begin
+			//	Increment seconds by 1 on every posedge because the clock is of 1Hz
 			temp_second <= temp_second + 1;
-		if(temp_second >=59) begin // second > 59 then minute increases
+		if(temp_second >=59) begin
+			// Increment minutes by 1 when seconds > 59. Also reset seconds to 0
 			temp_minute <= temp_minute + 1;
 			temp_second <= 0;
 		end
-		if(temp_minute >=59) begin // minute > 59 then hour increases
+		if(temp_minute >=59) begin
+			// Increment hours by 1 when minutes > 59. Also reset minutes to 0
 			temp_minute <= 0;
 			temp_hour <= temp_hour + 1;
 		end
-		if(temp_hour >= 24) begin // hour > 24 then set hour to 0
+		if(temp_hour >= 24) begin
+			// Reset hours to 0 once hour >= 24
 			temp_hour <= 0; 
 		end
 		end
@@ -171,7 +193,7 @@ always @(posedge clock_1s or posedge reset) begin
 		Alarm <=0; 
 	else begin
 		if({alarm_hour1, alarm_hour0, alarm_min1, alarm_min0, 6'd0}=={clock_hour1, clock_hour0, clock_min1, clock_min0, seconds})
-		begin // if alarm time equals clock time, it will pulse high the Alarm signal with Alarm_ON=1
+		begin // if alarm time equals clock time, Alarm signal will go HIGH
 			if(Alarm_ON) Alarm <= 1; 
 		end
 		if(STOP_alarm)
@@ -185,13 +207,10 @@ end
 
 wire [21:0] tone;
 
-tone_generator buzzer(
-  .clk(clock),
-  .tone(tone),
-  .sound(sound)
-);
+//	Settting up connections for tone_generator module written in "tone.v"
+tone_generator buzzer(.clk(clock), .tone(tone), .sound(sound));
 
-assign tone = Alarm? 22'd125000:22'd0;
+assign tone = Alarm? 22'd125000:22'd0;	//	If alarm signal is LOW the tone is set to 0, if it is HIGH tone is set to a predefined value so that the buzzer produces sound
 
 endmodule 
 
