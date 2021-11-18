@@ -27,7 +27,7 @@ begin
             if (counter == 50_000_000)		//	50,000,000 cycles of clk signal is equivalent to half time period of new_clk signal.
                 begin
                     counter <= 0;
-                    new_clk <= ~new_clk;	//	Half period, therfore inverts itself
+                    new_clk <= ~new_clk;	//	Half period, therefore inverts itself
                 end
         end
 end
