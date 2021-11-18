@@ -1,7 +1,7 @@
 
 /*
 	The driver module is needed because in the in-built 7-segment display of the FPGA board the corresponding segments of each
-	display (left, center-left, center-right and right) have a common cathode. The anodes are different though, so we can choose
+	display (left, center-left, center-right and right) have a common cathode. However the anodes are different. So we can choose
 	which display is to remain active. The driver module rapidly flips through the displays and the number that needs to be
 	displayed in order to trick human eye into believing that each display is showing a different number.
 */
