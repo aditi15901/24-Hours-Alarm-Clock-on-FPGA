@@ -3,9 +3,9 @@
 
 module slowClock(
 	input clk,
-	//	The orginal clock that needs to slowed down i.e. the 100MHz clock of FPGA
+	//	The original clock that needs to slowed down i.e. the 100MHz clock of FPGA
 	input reset,
-	//	To reset the output clock signal to inital value
+	//	To reset the output clock signal to initial value
 	output reg new_clk
 	//	The slowed down clock i.e 1Hz clock signal to measure the passage of a second in alarm_module written in "alarm_module.v"
 );
