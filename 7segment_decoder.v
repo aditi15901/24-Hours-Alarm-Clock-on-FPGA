@@ -1,9 +1,15 @@
-//Decoder module for 7segment display
-//Design sources
+
+/*	
+	This module takes in a 4-bit number and outputs the corresponding 7 segment code (For active LOW specification).
+	It is used to convert the alarm_module outputs to 7-segment codes so that the number can be displayed on
+	the 7-segment display of the FPGA.
+*/
 
 module display_decoder(
     input [3:0] in,
+	//	A 4-bit number that needs to be converted to 7-segment code
     output reg [6:0] display
+	//	The output 7segment code for the given number
 );
 
 always @(in)
