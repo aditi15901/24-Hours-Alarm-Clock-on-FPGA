@@ -20,7 +20,7 @@ module clock(
 	output [6:0] led,
 	//	Connect them with FPGA leds
 	output [6:0] seg,
-	output [3:0] an
+	output [3:0] an,
 	//	Connect them with the 7-seg display of the FPGA
 	output sound
 );
